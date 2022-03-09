@@ -1,0 +1,260 @@
+/* Custom properties/variables  */
+@font-face {
+    font-family: "RH";
+    src: url(css/rel.ttf);
+}
+
+@font-face {
+    font-family: "MO";
+    src: url(css/mo.otf);
+}
+
+:root {
+    --main-white: #f8f8f2;
+    --main-red: #ff5555;
+    --main-blue: #8be9fd;
+    --main-gray: #44475a;
+    --main-black: #282a36;
+    --main-lgray: #6272a4;
+  }
+  
+  /* Base reset */
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* box-sizing and font sizing */
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  
+  html {
+    box-sizing: border-box;
+  
+    /* Set font size for easy rem calculations
+     * default document font size = 16px, 1rem = 16px, 100% = 16px
+     * (100% / 16px) * 10 = 62.5%, 1rem = 10px, 62.5% = 10px
+    */
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+  }
+  
+  /* A few media query to set some font sizes at different screen sizes.
+   * This helps automate a bit of responsiveness.
+   * The trick is to use the rem unit for size values, margin and padding.
+   * Because rem is relative to the document font size
+   * when we scale up or down the font size on the document
+   * it will affect all properties using rem units for the values.
+  */
+  
+  /* I am using the em unit for breakpoints
+   * The calculation is the following
+   * screen size divided by browser base font size
+   * As an example: a breakpoint at 980px
+   * 980px / 16px = 61.25em
+  */
+  
+  /* 1200px / 16px = 75em */
+  @media (max-width: 75em) {
+    html {
+      font-size: 60%;
+    }
+  }
+  
+  /* 980px / 16px = 61.25em */
+  @media (max-width: 61.25em) {
+    html {
+      font-size: 58%;
+    }
+  }
+  
+  /* 460px / 16px = 28.75em */
+  @media (max-width: 28.75em) {
+    html {
+      font-size: 55%;
+    }
+  }
+
+body {
+    font-family: 'RH', 'RH';
+    font-size: 1.8rem; /* 18px */
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--main-white);
+    background-image: linear-gradient(45deg, #1f1836,#1b1d26);
+    /* background: var(--main-black); */
+    /* height: 500vh; */
+}
+
+a {
+    text-decoration: none;
+    color: var(--main-white);
+}
+
+ul {
+    list-style: none;
+}
+
+h1 {
+  /* font-family: sans-serif; */
+  font-size: 5rem;
+}
+
+.nav {
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--main-gray);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+    z-index: 10;
+    text-decoration: none;
+}
+
+.nav-list {
+    display: flex;
+    margin-right: 2rem;
+    color: azure;
+}
+
+@media (max-width: 28.75em) {
+    .nav {
+      justify-content: center;
+    }
+  
+    .nav-list {
+      margin: 0 1rem;
+    }
+}
+
+.nav-list a {
+    display: block;
+    font-size: 2.2rem;
+    padding: 2rem;
+}
+
+.nav-list a:hover {
+    background-color: var(--main-lgray);
+}
+
+.header-title{
+    font-size: 3rem;
+    font-family: 'MO';
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+}
+
+.wlc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+  background-image: linear-gradient(45deg, #1f1836,#1b1d26);
+}
+
+.thin {
+  font-size: 3rem;
+}
+
+.ftr {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+  width: 100%;
+  height: 40vh;
+  /* margin: 25px; */
+  background-color: #000;
+  background: var(--main-black);
+}
+
+.list-in {
+  display: flex;
+  padding: 100px;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 25px;
+  list-style-type: circle;
+  background: var(--main-black);
+  border-radius: 30px;
+}
+
+.vthin {
+  font-family: sans-serif;
+}
+
+.FTRp {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--main-black);
+  border-radius: 30px;
+  margin: 10px;
+  bottom: 20;
+}
+
+.contact-pop {
+  display: flex;
+  justify-content: center;
+  width: 35rem;
+  padding: 20px;
+  background: #44475a;
+  position: fixed;
+  border-radius: 10px;
+  top: 130;
+  right: 10;
+  opacity: 100%;
+  visibility: hidden;
+}
+
+.Triangles-ok {
+  color: #44475a;
+  display: flex;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  padding: 30px;
+  background: #44475a;
+  position: fixed;
+  right: 50;
+  transform: rotate(45deg);
+  top: 100;
+  visibility: hidden;
+  opacity: 100%;
+}
+
+.btnnav {
+  background-color: var(--main-red);
+  color: var(--main-white);
+  border-radius: 10px;
+  border: none;
+  margin-top: 30px;
+  width: 210px;
+  height: 35px;
+  font-size: 20px;
+  border: #f8f8f2 2px solid;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btnnav:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 5px 5px #00000060;
+}
+
+.dark:active {
+  background-color: #7e2a2a;
+  transform: translateY(-3px);
+  box-shadow: 0 1px 1px #00000060;
+}
