@@ -74,7 +74,7 @@
   /* 460px / 16px = 28.75em */
   @media (max-width: 28.75em) {
     html {
-      font-size: 55%;
+      font-size: 50%;
     }
   }
 
@@ -163,7 +163,7 @@ h1 {
 }
 
 .thin {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .ftr {
@@ -181,7 +181,7 @@ h1 {
 .list-in {
   display: flex;
   padding: 100px;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   margin: 25px;
   list-style-type: circle;
