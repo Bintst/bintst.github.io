@@ -1164,201 +1164,173 @@ html {
     </footer>
 
     <script>
-      // --- 1. INITIALIZATION ---
-      const pixelGrid = document.getElementById("pixelGrid");
-      const networkContainer = document.getElementById("networkContainer");
-      const svgLines = document.getElementById("svgLines");
-      const outputContainer = document.getElementById("output-container");
-
-      const layers = [
-        { count: 3, labels: ["Piksel R", "Piksel G", "Piksel B"] },
-        { count: 4, labels: ["Garis", "Tepi", "Tekstur", "Kontras"] },
-        { count: 4, labels: ["Telinga", "Kumis", "Bentuk Mata", "Corak"] },
-        { count: 2, labels: ["Spesies", "Ras"] },
-      ];
-      let nodeElements = [];
-
-      // Generate Pixels
-      for (let i = 0; i < 9; i++) {
-        let pixel = document.createElement("div");
-        pixel.className = "pixel";
-        pixel.innerText = Math.floor(Math.random() * 255);
-        pixelGrid.appendChild(pixel);
-      }
-
-      // Generate Nodes
-      const containerWidth = 500; // Match max-width
-      const layerSpacing = containerWidth / (layers.length + 1);
-
-      layers.forEach((layerData, layerIndex) => {
-        let layerDiv = document.createElement("div");
-        layerDiv.className = "layer-group";
-        layerDiv.style.left = `${layerSpacing * (layerIndex + 1) - 40}px`;
-
-        let currentLayerNodes = [];
-        for (let n = 0; n < layerData.count; n++) {
-          let nodeItem = document.createElement("div");
-          nodeItem.className = "node-item";
-
-          let node = document.createElement("div");
-          node.className = "node";
-
-          let label = document.createElement("div");
-          label.className = "node-label";
-          label.innerText = layerData.labels[n];
-
-          nodeItem.appendChild(node);
-          nodeItem.appendChild(label);
-          layerDiv.appendChild(nodeItem);
-
-          currentLayerNodes.push(node);
-        }
-        networkContainer.appendChild(layerDiv);
-        nodeElements.push(currentLayerNodes);
-      });
-
-      // Generate SVG Lines
-      function drawLines() {
-        svgLines.innerHTML = "";
-        const containerRect = networkContainer.getBoundingClientRect();
-
-        svgLines.setAttribute(
-          "viewBox",
-          `0 0 ${containerRect.width} ${containerRect.height}`,
-        );
-        svgLines.setAttribute("width", "100%");
-        svgLines.setAttribute("height", "100%");
-
-        for (let i = 1; i < layers.length; i++) {
-          const prevNodes = nodeElements[i - 1];
-          const currNodes = nodeElements[i];
-
-          prevNodes.forEach((prevNode) => {
-            const prevRect = prevNode.getBoundingClientRect();
-            const x1 = prevRect.left + prevRect.width / 2 - containerRect.left;
-            const y1 = prevRect.top + prevRect.height / 2 - containerRect.top;
-
-            currNodes.forEach((currNode) => {
-              const currRect = currNode.getBoundingClientRect();
-              const x2 =
-                currRect.left + currRect.width / 2 - containerRect.left;
-              const y2 = currRect.top + currRect.height / 2 - containerRect.top;
-
-              const line = document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "line",
-              );
-              line.setAttribute("x1", x1);
-              line.setAttribute("y1", y1);
-              line.setAttribute("x2", x2);
-              line.setAttribute("y2", y2);
-              line.setAttribute("class", "layer-line");
-              svgLines.appendChild(line);
-            });
-          });
-        }
-      }
-
-      requestAnimationFrame(() => {
-        drawLines();
-      });
-      window.addEventListener("resize", drawLines);
-
-      // --- 2. SCROLL REVEAL LOGIC ---
-      const reveals = document.querySelectorAll(".reveal");
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) entry.target.classList.add("visible");
-          });
-        },
-        { threshold: 0.1 },
-      );
-      reveals.forEach((r) => observer.observe(r));
-
-      // --- 3. SIMULATION LOGIC (Forward Pass) ---
-      function runSimulation() {
-        // Reset everything
-        document
-          .querySelectorAll(".node-item")
-          .forEach((n) => n.classList.remove("active"));
-        document
-          .querySelectorAll(".layer-line")
-          .forEach((l) => l.classList.remove("active"));
-        document
-          .querySelectorAll(".pixel")
-          .forEach((p) => p.classList.remove("active"));
-
-        // Reset Output to completely empty
-        outputContainer.innerHTML =
-          '<p class="output-placeholder">Sedang memproses gambar...</p>';
-
-        const catImage = document.getElementById("catImage");
-        const pixels = document.querySelectorAll(".pixel");
-        const lines = document.querySelectorAll(".layer-line");
-        const nodeItems = document.querySelectorAll(".node-item");
-
-        // 1. Image turns into pixels
-        catImage.style.opacity = "0.1";
-        pixelGrid.style.opacity = "1";
-        pixels.forEach((pixel, i) => {
-          setTimeout(() => pixel.classList.add("active"), i * 100);
-        });
-
-        // 2. Data flows through layers
-        let delay = 1000;
-        let lineIndex = 0;
-        let nodeItemIndex = 0;
-
-        nodeElements.forEach((layer, layerIdx) => {
-          if (layerIdx > 0) {
-            let prevNodeCount = nodeElements[layerIdx - 1].length;
-            let currNodeCount = layer.length;
-            let linesToActivate = prevNodeCount * currNodeCount;
-
-            for (let i = 0; i < linesToActivate; i++) {
-              setTimeout(
-                () => {
-                  if (lines[lineIndex])
-                    lines[lineIndex].classList.add("active");
-                  lineIndex++;
-                },
-                delay + i * 40,
-              );
-            }
-            delay += linesToActivate * 40 + 100;
-          }
-
-          layer.forEach((node, nodeIdx) => {
-            setTimeout(
-              () => {
-                if (nodeItems[nodeItemIndex])
-                  nodeItems[nodeItemIndex].classList.add("active");
-                nodeItemIndex++;
-              },
-              delay + nodeIdx * 100,
-            );
-          });
-          delay += layer.length * 100 + 200;
-        });
-
-        // 3. Generate Output ONLY after process finishes
-        // Empty the container first
-        outputContainer.innerHTML = "";
-
-        // Create Output HTML Elements
-        const outputs = [
-          { label: "Hewan: Kucing", pct: 94, class: "cat" },
-          { label: "Ras: Persian", pct: 85, class: "ras" },
-          { label: "Warna: Putih", pct: 70, class: "warna" },
+       // --- 1. INITIALIZATION ---
+        const pixelGrid = document.getElementById('pixelGrid');
+        const networkContainer = document.getElementById('networkContainer');
+        const svgLines = document.getElementById('svgLines');
+        const outputContainer = document.getElementById('output-container');
+        
+        const layers = [
+            { count: 3, labels: ["Piksel R", "Piksel G", "Piksel B"] },
+            { count: 4, labels: ["Garis", "Tepi", "Tekstur", "Kontras"] },
+            { count: 4, labels: ["Telinga", "Kumis", "Bentuk Mata", "Corak"] },
+            { count: 2, labels: ["Spesies", "Ras"] }
         ];
+        let nodeElements = [];
 
-        outputs.forEach((out, index) => {
-          setTimeout(
-            () => {
-              let barDiv = document.createElement("div");
-              barDiv.className = "output-bar";
-              barDiv.innerHTML = `
+        // Generate Pixels
+        for(let i=0; i<9; i++) {
+            let pixel = document.createElement('div');
+            pixel.className = 'pixel';
+            pixel.innerText = Math.floor(Math.random() * 255);
+            pixelGrid.appendChild(pixel);
+        }
+
+        // Generate Nodes
+        layers.forEach((layerData, layerIndex) => {
+            let layerDiv = document.createElement('div');
+            layerDiv.className = 'layer-group';
+            
+            // RESPONSIVE POSITIONING: Use percentage instead of fixed pixels
+            let leftPercentage = ((layerIndex + 1) / (layers.length + 1)) * 100;
+            layerDiv.style.left = `calc(${leftPercentage}% - 12px)`; // 12px is half of node width (24px)
+            
+            let currentLayerNodes = [];
+            for(let n=0; n<layerData.count; n++) {
+                let nodeItem = document.createElement('div');
+                nodeItem.className = 'node-item';
+                
+                let node = document.createElement('div');
+                node.className = 'node';
+                
+                let label = document.createElement('div');
+                label.className = 'node-label';
+                label.innerText = layerData.labels[n];
+                
+                nodeItem.appendChild(node);
+                nodeItem.appendChild(label);
+                layerDiv.appendChild(nodeItem);
+                
+                currentLayerNodes.push(node);
+            }
+            networkContainer.appendChild(layerDiv);
+            nodeElements.push(currentLayerNodes);
+        });
+
+        // Generate SVG Lines based on ACTUAL DOM positions
+        function drawLines() {
+            svgLines.innerHTML = ''; 
+            const containerRect = networkContainer.getBoundingClientRect();
+            
+            svgLines.setAttribute('viewBox', `0 0 ${containerRect.width} ${containerRect.height}`);
+            svgLines.setAttribute('width', '100%');
+            svgLines.setAttribute('height', '100%');
+
+            for (let i = 1; i < layers.length; i++) {
+                const prevNodes = nodeElements[i - 1];
+                const currNodes = nodeElements[i];
+
+                prevNodes.forEach(prevNode => {
+                    const prevRect = prevNode.getBoundingClientRect();
+                    const x1 = (prevRect.left + prevRect.width / 2) - containerRect.left;
+                    const y1 = (prevRect.top + prevRect.height / 2) - containerRect.top;
+
+                    currNodes.forEach(currNode => {
+                        const currRect = currNode.getBoundingClientRect();
+                        const x2 = (currRect.left + currRect.width / 2) - containerRect.left;
+                        const y2 = (currRect.top + currRect.height / 2) - containerRect.top;
+
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', x1);
+                        line.setAttribute('y1', y1);
+                        line.setAttribute('x2', x2);
+                        line.setAttribute('y2', y2);
+                        line.setAttribute('class', 'layer-line');
+                        svgLines.appendChild(line);
+                    });
+                });
+            }
+        }
+
+        // Wait for DOM to render, then draw lines accurately
+        requestAnimationFrame(() => { drawLines(); });
+        window.addEventListener('resize', drawLines);
+
+        // --- 2. SCROLL REVEAL LOGIC ---
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        reveals.forEach(r => observer.observe(r));
+
+        // --- 3. SIMULATION LOGIC (Forward Pass) ---
+        function runSimulation() {
+            // Reset everything
+            document.querySelectorAll('.node-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.layer-line').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.pixel').forEach(p => p.classList.remove('active'));
+            
+            // Reset Output to completely empty
+            outputContainer.innerHTML = '<p class="output-placeholder">Sedang memproses gambar...</p>';
+
+            const catImage = document.getElementById('catImage');
+            const pixels = document.querySelectorAll('.pixel');
+            const lines = document.querySelectorAll('.layer-line');
+            const nodeItems = document.querySelectorAll('.node-item');
+
+            // 1. Image turns into pixels
+            catImage.style.opacity = '0.1';
+            pixelGrid.style.opacity = '1';
+            pixels.forEach((pixel, i) => {
+                setTimeout(() => pixel.classList.add('active'), i * 100);
+            });
+
+            // 2. Data flows through layers
+            let delay = 1000; 
+            let lineIndex = 0;
+            let nodeItemIndex = 0;
+            
+            nodeElements.forEach((layer, layerIdx) => {
+                if (layerIdx > 0) {
+                    let prevNodeCount = nodeElements[layerIdx-1].length;
+                    let currNodeCount = layer.length;
+                    let linesToActivate = prevNodeCount * currNodeCount;
+                    
+                    for(let i=0; i<linesToActivate; i++) {
+                        setTimeout(() => {
+                            if(lines[lineIndex]) lines[lineIndex].classList.add('active');
+                            lineIndex++;
+                        }, delay + (i * 40));
+                    }
+                    delay += linesToActivate * 40 + 100;
+                }
+
+                layer.forEach((node, nodeIdx) => {
+                    setTimeout(() => {
+                        if(nodeItems[nodeItemIndex]) nodeItems[nodeItemIndex].classList.add('active');
+                        nodeItemIndex++;
+                    }, delay + (nodeIdx * 100));
+                });
+                delay += layer.length * 100 + 200;
+            });
+
+            // 3. Generate Output ONLY after process finishes
+            outputContainer.innerHTML = ''; 
+            
+            // Create Output HTML Elements
+            const outputs = [
+                { label: "Hewan: Kucing", pct: 94, class: "cat" },
+                { label: "Ras: Persian", pct: 85, class: "ras" },
+                { label: "Warna: Putih", pct: 70, class: "warna" }
+            ];
+
+            outputs.forEach((out, index) => {
+                setTimeout(() => {
+                    let barDiv = document.createElement('div');
+                    barDiv.className = 'output-bar';
+                    barDiv.innerHTML = `
                         <div class="bar-label">
                             <span>${out.label}</span>
                             <span>${out.pct}%</span>
@@ -1367,24 +1339,22 @@ html {
                             <div class="bar-fill ${out.class}" style="width: 0%"></div>
                         </div>
                     `;
-              outputContainer.appendChild(barDiv);
+                    outputContainer.appendChild(barDiv);
+                    
+                    // Trigger reflow then animate width
+                    requestAnimationFrame(() => {
+                        barDiv.classList.add('visible');
+                        barDiv.querySelector('.bar-fill').style.width = out.pct + '%';
+                    });
+                }, delay + (index * 200));
+            });
 
-              // Trigger reflow then animate width
-              requestAnimationFrame(() => {
-                barDiv.classList.add("visible");
-                barDiv.querySelector(".bar-fill").style.width = out.pct + "%";
-              });
-            },
-            delay + index * 200,
-          );
-        });
-
-        // Restore image opacity slightly after outputs appear
-        setTimeout(() => {
-          catImage.style.opacity = "1";
-          pixelGrid.style.opacity = "0";
-        }, delay + 800);
-      }
+            // Restore image opacity slightly after outputs appear
+            setTimeout(() => {
+                catImage.style.opacity = '1';
+                pixelGrid.style.opacity = '0';
+            }, delay + 800);
+        }
     </script>
   </body>
 </html>
