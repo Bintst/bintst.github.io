@@ -1,2 +1,1 @@
-# bintst.github.io
-website
+ya
