@@ -860,56 +860,40 @@ html {
 
     <!-- CARA KERJA & SIMULATOR -->
     <section id="cara-kerja" class="reveal">
-      <h2>Bagaimana Jaringan Ini Tersusun & Bekerja?</h2>
-      <p>
-        Deep Learning terdiri dari <b>Input Layer</b>,
-        <b>Hidden Layer</b> (tempat pengolahan pola), dan <b>Output Layer</b>.
-        Coba klik tombol di bawah untuk melihat bagaimana AI mengubah gambar
-        mentah menjadi angka, memprosesnya melalui neuron yang saling terhubung,
-        dan menghasilkan keputusan!
-      </p>
+        <h2>Bagaimana Jaringan Ini Tersusun & Bekerja?</h2>
+        <p>Deep Learning terdiri dari <b>Input Layer</b>, <b>Hidden Layer</b> (tempat pengolahan pola), dan <b>Output Layer</b>. Coba klik tombol di bawah untuk melihat bagaimana AI mengubah gambar mentah menjadi angka, memprosesnya melalui neuron yang saling terhubung, dan menghasilkan keputusan!</p>
+        
+        <div class="simulator-wrapper">
+            <div class="sim-columns">
+                <!-- Input: Image to Pixels -->
+                <div class="sim-input">
+                    <h3>1. Input Data</h3>
+                    <div class="cat-image-container">
+                        <img src="https://placecats.com/neo/200/200" alt="Gambar Kucing" class="cat-image" id="catImage">
+                        <div class="pixel-grid" id="pixelGrid"></div>
+                    </div>
+                    <p style="font-size: 0.8rem; color:#8b949e;">Data mentah diubah menjadi piksel angka</p>
+                </div>
 
-      <div class="simulator-wrapper">
-        <div class="sim-columns">
-          <!-- Input: Image to Pixels -->
-          <div class="sim-input">
-            <h3>Input Data</h3>
-            <div class="cat-image-container">
-              <img
-                src="/src/himalayan-cat-banner.webp"
-                alt="Gambar Kucing"
-                class="cat-image"
-                id="catImage"
-              />
-              <div class="pixel-grid" id="pixelGrid"></div>
+                <!-- Process: Neural Network -->
+                <div class="network-container" id="networkContainer">
+                    <svg class="layers-svg" id="svgLines"></svg>
+                </div>
+
+                <!-- Output: Multi-label Prediction -->
+                <div class="sim-output">
+                    <h3>3. Output</h3>
+                    <div id="output-container">
+                        <p class="output-placeholder">Menunggu proses AI...</p>
+                    </div>
+                </div>
             </div>
-            <p style="font-size: 0.8rem; color: #8b949e">
-              Data mentah diubah menjadi piksel angka
-            </p>
-          </div>
-
-          <!-- Process: Neural Network -->
-          <div class="network-container" id="networkContainer">
-            <svg class="layers-svg" id="svgLines"></svg>
-          </div>
-
-          <!-- Output: Multi-label Prediction -->
-          <div class="sim-output">
-            <h3>Output</h3>
-            <div id="output-container">
-              <p class="output-placeholder">Menunggu proses AI...</p>
+            
+            <div style="text-align: center;">
+                <button onclick="runSimulation()">Jalankan Proses AI (Forward Pass)</button>
             </div>
-          </div>
         </div>
-
-        <div style="text-align: center">
-          <button onclick="runSimulation()">
-            Jalankan Proses AI (Forward Pass)
-          </button>
-        </div>
-      </div>
     </section>
-
     <!-- FASE BELAJAR & BEROPERASI -->
     <section id="fase" class="reveal">
       <h2>Dua Fase Utama</h2>
