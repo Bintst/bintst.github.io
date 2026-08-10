@@ -1,0 +1,1388 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deep Learning: Fondasi Kecerdasan Buatan Modern</title>
+    <style>
+      :root {
+        --bg-color: #000000;
+        --text-color: #e6edf3;
+        --accent-color: #00f2ea; /* Cyan */
+        --accent-blue: #3b82f6; /* Biru cerah */
+        --accent-pink: #ff007a; /* Pink */
+        --card-bg: #161b22;
+        --border-color: #30363d;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "SF Pro", Helvetica, sans-serif;
+      }
+
+      ::-webkit-scrollbar {
+    width: 8px; /* Lebar scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #000; /* Warna background jalur scrollbar (samakan dengan bg web) */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #000; /* Warna thumb (penggeser) awal */
+    border-radius: 10px; /* Membuat sudutnya membulat */
+    border: 2px solid #000; /* Memberi jarak agar terlihat melayang */
+    transition: background 0.3s; /* Animasi halus saat hover */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6; /* Berubah menjadi biru saat di-hover */
+}
+
+/* Support untuk Firefox */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-blue) black;
+}
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        overflow-x: hidden;
+        line-height: 1.6;
+      }
+
+      /* Navbar */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(13, 17, 23, 0.85);
+        backdrop-filter: blur(12px);
+        padding: 15px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      nav h1 {
+        font-size: 1.2rem;
+        color: var(--accent-blue);
+      }
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 25px;
+      }
+      nav a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.3s;
+      }
+      nav a:hover {
+        color: var(--accent-color);
+      }
+
+      /* Sections General */
+      section {
+        min-height: 100vh;
+        padding: 120px 10% 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      h2 {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        border-left: 5px solid var(--accent-blue);
+        padding-left: 15px;
+      }
+      h3 {
+        font-size: 1.3rem;
+        color: var(--accent-color);
+        margin-bottom: 10px;
+      }
+      p {
+        font-size: 1.05rem;
+        margin-bottom: 15px;
+        color: #adbac7;
+      }
+      ul {
+        margin-bottom: 20px;
+        padding-left: 20px;
+      }
+      li {
+        margin-bottom: 8px;
+        color: #adbac7;
+      }
+
+      /* Hero Section */
+      #hero {
+        text-align: center;
+        align-items: center;
+      }
+      #hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        background: linear-gradient(
+          45deg,
+          var(--accent-color),
+          var(--accent-blue)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero-animation {
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+      .neuron {
+        width: 15px;
+        height: 15px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        animation: pulse 2s infinite ease-in-out;
+      }
+      .neuron:nth-child(2) {
+        animation-delay: 0.2s;
+        background: var(--accent-blue);
+      }
+      .neuron:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .neuron:nth-child(4) {
+        animation-delay: 0.6s;
+        background: var(--accent-blue);
+      }
+      .neuron:nth-child(5) {
+        animation-delay: 0.8s;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.5;
+          box-shadow: 0 0 0 0 rgba(0, 242, 234, 0.4);
+        }
+        50% {
+          transform: scale(1.8);
+          opacity: 1;
+          box-shadow: 0 0 20px 5px rgba(0, 242, 234, 0.2);
+        }
+      }
+
+      button {
+        background: var(--accent-blue);
+        color: white;
+        border: none;
+        padding: 12px 35px;
+        font-size: 1rem;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+      button:hover {
+        background: var(--accent-color);
+        color: #000;
+        transform: scale(1.05);
+      }
+
+      /* Nested Circles (AI vs ML vs DL) */
+      .nested-container {
+        display: flex;
+        justify-content: center;
+        margin: 40px 0;
+      }
+      .circle {
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        text-align: center;
+        transition: 0.3s;
+        cursor: pointer;
+        position: relative;
+      }
+      .circle:hover {
+        transform: scale(1.05);
+      }
+      .ai-circle {
+        width: 300px;
+        height: 300px;
+        background: rgba(0, 242, 234, 0.1);
+        border: 2px solid var(--accent-color);
+        color: var(--accent-color);
+        flex-direction: column;
+        padding: 20px;
+      }
+      .ml-circle {
+        width: 200px;
+        height: 200px;
+        background: rgba(59, 130, 246, 0.15);
+        border: 2px solid var(--accent-blue);
+        color: var(--accent-blue);
+        flex-direction: column;
+        margin-bottom: 40px;
+      }
+      .dl-circle {
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 0, 122, 0.2);
+        border: 2px solid var(--accent-pink);
+        color: var(--accent-pink);
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+      }
+
+      /* Timeline (Sejarah) */
+      .timeline {
+        position: relative;
+        margin: 40px 0;
+        padding-left: 30px;
+        border-left: 2px solid var(--accent-blue);
+      }
+      .timeline-item {
+        margin-bottom: 40px;
+        position: relative;
+      }
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -36px;
+        top: 5px;
+        width: 12px;
+        height: 12px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--accent-color);
+      }
+      .timeline-year {
+        color: var(--accent-color);
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+      .timeline-content {
+        color: #adbac7;
+        margin-top: 5px;
+      }
+
+      /* Simulator Section */
+      .simulator-wrapper {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 40px;
+        margin-top: 30px;
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+      .sim-columns {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 40px;
+      }
+      .sim-input {
+        text-align: center;
+        width: 180px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+      .cat-image-container {
+        width: 140px;
+        height: 140px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 2px solid var(--border-color);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cat-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.3s;
+      }
+      .pixel-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+        background: #000;
+        padding: 5px;
+        border-radius: 8px;
+        width: 120px;
+        height: 120px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .pixel {
+        background: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.6rem;
+        color: var(--accent-color);
+        opacity: 0.2;
+        transition:
+          opacity 0.3s,
+          background 0.3s;
+      }
+      .pixel.active {
+        opacity: 1;
+        background: #1a1a1a;
+      }
+
+      /* Network SVG */
+      .network-container {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        height: 450px;
+        margin: 0 auto;
+      }
+      .layers-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+      .layer-line {
+        stroke: #30363d;
+        stroke-width: 2;
+        transition:
+          stroke 0.4s,
+          stroke-width 0.4s,
+          filter 0.4s;
+      }
+      .layer-line.active {
+        stroke: var(--accent-color);
+        stroke-width: 3;
+        filter: drop-shadow(0 0 4px var(--accent-color));
+      }
+      .layer-group {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        z-index: 2;
+        align-items: center;
+      }
+      .node-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px 0;
+      }
+      .node {
+        width: 24px;
+        height: 24px;
+        background: var(--bg-color);
+        border: 2px solid var(--border-color);
+        border-radius: 50%;
+        transition: all 0.3s;
+      }
+      .node.active {
+        background: var(--accent-blue);
+        border-color: var(--accent-blue);
+        box-shadow: 0 0 12px var(--accent-blue);
+      }
+      .node-label {
+        font-size: 0.7rem;
+        color: #8b949e;
+        margin-top: 8px;
+        text-align: center;
+        width: 80px;
+        transition:
+          color 0.3s,
+          font-weight 0.3s;
+      }
+      .node-item.active .node-label {
+        color: var(--accent-color);
+        font-weight: bold;
+      }
+
+      /* Output Bars */
+      .sim-output {
+        width: 220px;
+      }
+      #output-container {
+        min-height: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .output-placeholder {
+        color: #484f58;
+        font-style: italic;
+        text-align: center;
+        margin-top: 40px;
+      }
+      .output-bar {
+        margin-bottom: 20px;
+        opacity: 0;
+        transform: translateY(10px);
+        transition:
+          opacity 0.5s,
+          transform 0.5s;
+      }
+      .output-bar.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .bar-label {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .bar-track {
+        width: 100%;
+        height: 10px;
+        background: #333;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .bar-fill {
+        height: 100%;
+        width: 0;
+        background: var(--accent-blue);
+        transition: width 1.5s ease-out;
+      }
+      .bar-fill.cat {
+        background: var(--accent-color);
+      }
+      .bar-fill.ras {
+        background: var(--accent-blue);
+      }
+      .bar-fill.warna {
+        background: var(--accent-pink);
+      }
+
+      /* Training vs Inference Styling */
+      .phase-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 30px;
+      }
+      .phase-box {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        padding: 30px;
+        border-radius: 12px;
+        transition: 0.3s;
+      }
+      .phase-box:hover {
+        border-color: var(--accent-blue);
+        transform: translateY(-5px);
+      }
+      .phase-box h3 {
+        color: var(--accent-blue);
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .step-list {
+        list-style: none;
+        padding-left: 0;
+      }
+      .step-list li {
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 20px;
+        color: #adbac7;
+      }
+      .step-list li::before {
+        content: attr(data-step);
+        position: absolute;
+        left: 0;
+        top: -2px;
+        width: 24px;
+        height: 24px;
+        background: rgba(59, 130, 246, 0.1);
+        border: 2px solid var(--accent-blue);
+        color: var(--accent-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: bold;
+      }
+      .step-title {
+        color: var(--text-color);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      /* Keunikan & Kekurangan (Flip Cards) */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+      }
+      .flip-card {
+        perspective: 1000px;
+        height: 280px;
+      }
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+        cursor: pointer;
+      }
+      .flip-card:hover .flip-card-inner,
+      .flip-card.flipped .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+      .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 12px;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid var(--border-color);
+      }
+      .card-front {
+        background: var(--card-bg);
+      }
+      .card-back {
+        background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+        transform: rotateY(180deg);
+      }
+      .card-front h3 {
+        color: var(--accent-color);
+      }
+      .card-back h3 {
+        color: #fff;
+      }
+      .card-back p {
+        color: #e6edf3;
+      }
+      .hint {
+        font-size: 0.8rem;
+        margin-top: auto;
+        opacity: 0.7;
+        text-align: right;
+        color: #8b949e;
+      }
+
+      /* Contoh Aplikasi Nyata */
+      .example-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-top: 30px;
+      }
+      .example-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
+      }
+      .example-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: var(--accent-color);
+      }
+      .example-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: var(--text-color);
+      }
+      .example-card .tag {
+        display: inline-block;
+        padding: 5px 12px;
+        background: rgba(59, 130, 246, 0.2);
+        color: var(--accent-blue);
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+      .example-card p {
+        margin-bottom: 15px;
+      }
+      .example-card b {
+        color: var(--text-color);
+      }
+
+      .pattern-highlight {
+        margin-top: 30px;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.1),
+          rgba(0, 242, 234, 0.1)
+        );
+        border: 1px solid var(--accent-blue);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+      }
+      .pattern-highlight h3 {
+        color: var(--accent-color);
+        margin-bottom: 15px;
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--card-bg);
+        border-top: 1px solid var(--border-color);
+        padding: 40px 10%;
+        text-align: center;
+        margin-top: 60px;
+      }
+      .footer-content h3 {
+        color: var(--accent-color);
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+      }
+      .footer-members {
+        list-style: none;
+        padding: 0;
+        color: #adbac7;
+        font-size: 1rem;
+      }
+      .footer-members li {
+        margin-bottom: 5px;
+      }
+
+      /* Reveal Animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 1s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 768px) {
+        nav ul {
+          display: none;
+        }
+        #hero h1 {
+          font-size: 2.2rem;
+        }
+        .sim-columns {
+          flex-direction: column;
+        }
+        .network-container {
+          transform: scale(0.85);
+          height: 400px;
+        }
+        .phase-container,
+        .example-grid {
+          grid-template-columns: 1fr;
+        }
+        /* Modern Aesthetic Scrollbar */
+
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <h1>Kelompok 2 - Deep Learning XE-7</h1>
+      <ul>
+        <li><a href="#hero">Beranda</a></li>
+        <li><a href="#konsep">Konsep</a></li>
+        <li><a href="#sejarah">Sejarah</a></li>
+        <li><a href="#cara-kerja">Proses</a></li>
+        <li><a href="#fase">Fase</a></li>
+        <li><a href="#pro-kontra">Keunikan</a></li>
+        <li><a href="#contoh">Contoh</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero">
+      <div class="reveal">
+        <h1>Deep Learning</h1>
+        <h3 style="color: var(--text-color)">
+          Fondasi Kecerdasan Buatan Modern
+        </h3>
+        <p style="max-width: 700px; margin: 20px auto">
+          Memahami mesin di balik teknologi AI yang kita pakai sehari-hari.
+          Jangan takut dengan rumusnya, mari pahami logikanya!
+        </p>
+        <div class="hero-animation">
+          <div class="neuron"></div>
+          <div class="neuron"></div>
+          <div class="neuron"></div>
+          <div class="neuron"></div>
+          <div class="neuron"></div>
+        </div>
+        <a href="#konsep"><button>Explore</button></a>
+      </div>
+    </section>
+
+    <!-- KONSEP DASAR -->
+    <section id="konsep" class="reveal">
+      <h2>Apa itu Deep Learning?</h2>
+      <p>
+        Deep learning adalah cara komputer belajar mengenali pola dari data
+        mentah dengan meniru cara kerja otak manusia, tanpa perlu diberi tahu
+        aturan secara manual oleh manusia. Posisinya dalam dunia AI adalah
+        sebagai berikut:
+      </p>
+
+      <div class="nested-container">
+        <div class="circle ai-circle">
+          Artificial Intelligence (AI)
+          <div
+            style="
+              font-size: 0.8rem;
+              font-weight: normal;
+              color: #adbac7;
+              margin-top: 5px;
+            "
+          >
+            Mesin yang meniru kecerdasan manusia
+          </div>
+          <div class="circle ml-circle">
+            Machine Learning (ML)
+            <div
+              style="
+                font-size: 0.8rem;
+                font-weight: normal;
+                color: #adbac7;
+                margin-top: 5px;
+              "
+            >
+              Belajar dari data, bukan diprogram manual
+            </div>
+            <div class="circle dl-circle">Deep Learning (DL)</div>
+          </div>
+        </div>
+      </div>
+
+      <p
+        style="
+          text-align: center;
+          font-style: italic;
+          color: var(--accent-color);
+        "
+      >
+        Kata "Deep" (dalam) merujuk pada banyaknya lapisan tersembunyi (hidden
+        layer) di dalam jaringannya.
+      </p>
+    </section>
+
+    <!-- SEJARAH -->
+    <section id="sejarah" class="reveal">
+      <h2>Perjalanan Deep Learning</h2>
+      <p>
+        Dari ide gagal karena komputer jadul, hingga era kejayaan AI Generatif.
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">1950-an</div>
+          <div class="timeline-content">
+            <b>Awal mula:</b> Frank Rosenblatt memperkenalkan Perceptron, model
+            neuron buatan pertama yang terinspirasi dari sel saraf otak manusia.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1980-an</div>
+          <div class="timeline-content">
+            <b>Fondasi metode:</b> Ditemukan algoritma backpropagation. Namun
+            komputer belum cukup kuat, sehingga perkembangannya mandek (AI
+            winter).
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2012</div>
+          <div class="timeline-content">
+            <b>Titik balik:</b> Model AlexNet memenangkan kompetisi ImageNet.
+            Momen ini memicu ledakan riset dan investasi besar-besaran di bidang
+            AI.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2012 - Sekarang</div>
+          <div class="timeline-content">
+            <b>Era ledakan:</b> Didukung data raksasa dari internet dan GPU, DL
+            melahirkan ChatGPT, Face ID, mobil otonom, dan asisten virtual.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARA KERJA & SIMULATOR -->
+    <section id="cara-kerja" class="reveal">
+      <h2>Bagaimana Jaringan Ini Tersusun & Bekerja?</h2>
+      <p>
+        Deep Learning terdiri dari <b>Input Layer</b>,
+        <b>Hidden Layer</b> (tempat pengolahan pola), dan <b>Output Layer</b>.
+        Coba klik tombol di bawah untuk melihat bagaimana AI mengubah gambar
+        mentah menjadi angka, memprosesnya melalui neuron yang saling terhubung,
+        dan menghasilkan keputusan!
+      </p>
+
+      <div class="simulator-wrapper">
+        <div class="sim-columns">
+          <!-- Input: Image to Pixels -->
+          <div class="sim-input">
+            <h3>Input Data</h3>
+            <div class="cat-image-container">
+              <img
+                src="https://www.everypaw.com/.imaging/mte/everypaw/500x500/dam/cat-breed-guides/himalayan/himalayan-cat-banner.webp/jcr:content/himalayan-cat-banner.webp"
+                alt="Gambar Kucing"
+                class="cat-image"
+                id="catImage"
+              />
+              <div class="pixel-grid" id="pixelGrid"></div>
+            </div>
+            <p style="font-size: 0.8rem; color: #8b949e">
+              Data mentah diubah menjadi piksel angka
+            </p>
+          </div>
+
+          <!-- Process: Neural Network -->
+          <div class="network-container" id="networkContainer">
+            <svg class="layers-svg" id="svgLines"></svg>
+          </div>
+
+          <!-- Output: Multi-label Prediction -->
+          <div class="sim-output">
+            <h3>Output</h3>
+            <div id="output-container">
+              <p class="output-placeholder">Menunggu proses AI...</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center">
+          <button onclick="runSimulation()">
+            Jalankan Proses AI (Forward Pass)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FASE BELAJAR & BEROPERASI -->
+    <section id="fase" class="reveal">
+      <h2>Dua Fase Utama</h2>
+      <p>
+        Agar AI bisa berfungsi, ia melewati dua fase yang sangat berbeda. Fase
+        pertama butuh waktu lama, sumber daya yang banyak, dan komputer mahal
+        yaitu fase training/belajar, fase kedua terjadi dalam hitungan milidetik
+        di HP Anda menggunakan data hasil training yaitu fase inferensi.
+      </p>
+
+      <div class="phase-container">
+        <div class="phase-box">
+          <h3>1. Training (Fase Belajar)</h3>
+          <ul class="step-list">
+            <li data-step="A">
+              <span class="step-title">Forward Pass</span>
+              AI mencoba menebak data. Hasilnya pasti salah di awal karena
+              weight-nya masih acak.
+            </li>
+            <li data-step="B">
+              <span class="step-title">Hitung Loss</span>
+              Mengukur seberapa jauh tebakan meleset dari jawaban aslinya.
+            </li>
+            <li data-step="C">
+              <span class="step-title">Backpropagation</span>
+              Menelusuri kesalahan mundur untuk mencari neuron mana yang paling
+              berkontribusi terhadap kesalahan.
+            </li>
+            <li data-step="D">
+              <span class="step-title">Update Weight (Ingatan)</span>
+              Mengubah angka di setiap neuron agar tebakan selanjutnya lebih
+              akurat. Diulang jutaan kali!
+            </li>
+          </ul>
+        </div>
+        <div class="phase-box">
+          <h3>2. Inferensi (Fase Beroperasi)</h3>
+          <ul class="step-list">
+            <li data-step="1">
+              <span class="step-title">Data Baru</span>
+              Anda mengambil foto wajah (data yang belum pernah dilihat AI
+              sebelumnya).
+            </li>
+            <li data-step="2">
+              <span class="step-title">Preprocessing</span>
+              Foto mentah diubah jadi format angka yang bisa dibaca model.
+            </li>
+            <li data-step="3">
+              <span class="step-title">Forward Pass Saja</span>
+              AI menggunakan "ingatan" (weight matang) untuk menebak. Tanpa
+              Backpropagation.
+            </li>
+            <li data-step="4">
+              <span class="step-title">Aksi</span>
+              Hasil prediksi diterjemahkan sistem menjadi tindakan nyata
+              (contoh: layar HP terbuka).
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEUNIKAN & KEKURANGAN -->
+    <section id="pro-kontra" class="reveal">
+      <h2>Keunikan & Kekurangan</h2>
+      <p>
+        Deep Learning sangat berbeda dengan Machine Learning tradisional.
+        Arahkan kursor atau klik kartu di bawah untuk melihat dua sisi mata
+        uangnya!
+      </p>
+
+      <div class="cards-grid">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="card-face card-front">
+              <h3>Belajar Mandiri (Feature Learning)</h3>
+              <p>
+                ML tradisional butuh manusia memberi tahu "cari telinga
+                segitiga". Deep Learning menemukan sendiri ciri-ciri penting
+                langsung dari data mentah!
+              </p>
+              <div class="hint">Hover/Klik untuk balik ↻</div>
+            </div>
+            <div class="card-face card-back">
+              <h3>⚠️ Black Box</h3>
+              <p>
+                Hasil keputusan DL sulit dijelaskan secara transparan.
+                Analoginnya saat AI salah mendiagnosis penyakit, kita sulit tahu
+                di bagian mana kesalahannya terjadi atau salah langkah.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="card-face card-front">
+              <h3>Sangat Akurat</h3>
+              <p>
+                Untuk data kompleks dan tidak terstruktur (gambar, suara, teks),
+                performanya jauh mengungguli metode lain. Semakin banyak data,
+                semakin pintar dia.
+              </p>
+              <div class="hint">Hover/Klik untuk balik ↻</div>
+            </div>
+            <div class="card-face card-back">
+              <h3>⚠️ Rakus Data & Komputasi</h3>
+              <p>
+                DL butuh jutaan data agar akurat. Proses training butuh GPU
+                super mahal, biaya besar, waktu berhari-hari, dan menghabiskan
+                energi listrik masif.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="card-face card-front">
+              <h3>Multifungsi</h3>
+              <p>
+                FaceID (Computer Vision), Google Translate (NLP), Rekomendasi
+                TikTok (Sistem Rekomendasi), dan ChatGPT. Semuanya berakar pada
+                teknik yang sama.
+              </p>
+              <div class="hint">Hover/Klik untuk balik ↻</div>
+            </div>
+            <div class="card-face card-back">
+              <h3>⚠️ Rentan Bias Data</h3>
+              <p>
+                Jika data training tidak beragam (misal hanya berisi wajah satu
+                ras tertentu), model AI akan menghasilkan keputusan yang bias
+                dan tidak adil di dunia nyata.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTOH APLIKASI NYATA -->
+    <section id="contoh" class="reveal">
+      <h2>Contoh Nyata di Kehidupan Sehari-hari</h2>
+      <p>
+        Meskipun input berbeda yaitu gambar dan teks, serta arsitekturnya
+        berbeda, keduanya mengikuti alur dasar yang sama persis.
+      </p>
+
+      <div class="example-grid">
+        <div class="example-card">
+          <h3>📱 Face ID (Computer Vision)</h3>
+          <span class="tag">Arsitektur: CNN</span>
+
+          <p>
+            <b>Input:</b> Gambar wajah yang direpresentasikan sebagai piksel.
+          </p>
+          <p>
+            <b>Training:</b> Dilatih dengan jutaan foto wajah berlabel dari
+            berbagai orang, sudut, dan pencahayaan dari internet. Jaringan belajar membedakan
+            ciri wajah satu orang dengan orang lain.
+          </p>
+          <p>
+            
+            <b>Proses (Inferensi):</b>
+          </p>
+          <ul class="step-list">
+            <li data-step="1">
+              <span class="step-title">Data Input</span>
+              Kamera menangkap gambar wajah
+            </li>
+            <li data-step="2">
+              <span class="step-title">Preprocessing</span>
+              setiap layer pada gambar wajah diubah jadi format angka yang bisa dibaca model.
+            </li>
+            <li data-step="3">
+              <span class="step-title">Forward Pass</span>
+              model mengenali wajah, layer awal
+            mendeteksi garis/tepi, layer tengah membentuk mata/hidung, layer
+            akhir membentuk representasi wajah unik. membandingkan pola wajahmu
+            dengan data yang tersimpan
+            </li>
+            <li data-step="4">
+              <span class="step-title">Aksi</span>
+              Hasil prediksi dikeluarakan(Output). Jika skor kemiripan di atas 95%, layar terbuka.
+            Terjadi dalam hitungan milidetik karena hanya satu forward pass.
+            </li>
+          </ul>
+          </p>
+        </div>
+
+        <div class="example-card">
+          <h3>🌐 ChatGPT (LLM)</h3>
+          <span class="tag">Arsitektur: Transformer</span>
+          <p>
+            <b>Input:</b> Prompt, pertanyaan, atau perintah dalam bentuk teks. Teks dipecah menjadi tokens (sub-kata) dan diubah menjadi representasi angka (embeddings).
+            <br>
+            <br>
+            <b>Training:</b> LLM atau Large Language Model Dilatih dengan miliaran teks dari internet seperti artikel, buku, percakapan, kode program. Jaringan belajar memprediksi kata berikutnya yang paling mungkin muncul, berdasarkan konteks kata-kata sebelumnya, hingga menguasai pola bahasa, pengetahuan umum, dan cara menyusun jawaban yang koheren.
+          </p>
+          <p>
+            <b>Proses (Inferensi):</b>
+            <ul class="step-list">
+            <li data-step="1">
+              <span class="step-title">Data Input</span>
+              Kamu memasukkan prompt(instruksi) atau pertanyaan baru di kolom chat.
+            </li>
+            <li data-step="2">
+              <span class="step-title">Preprocessing</span>
+              Teks dipecah jadi unit-unit kecil (disebut token, bisa berupa kata atau bagian kata), lalu diubah jadi format angka yang bisa dibaca model
+            </li>
+            <li data-step="3">
+              <span class="step-title">Forward Pass</span>
+              Jaringan neuron memahami konteks seluruh percakapan, lalu memprediksi kata (token) berikutnya yang paling tepat. Dilakukan berulang-ulang secara berurutan, satu token demi satu token, hingga membentuk kalimat jawaban yang utuh
+            </li>
+            <li data-step="4">
+              <span class="step-title">Aksi</span>
+              Hasil prediksi berupa teks jawaban ditampilkan ke layar secara bertahap (itulah kenapa jawaban ChatGPT muncul kata demi kata, bukan langsung utuh), tanpa ada koreksi weight sama sekali di tahap ini
+            </li>
+          </ul>
+          </p>
+          <p>
+          </p>
+        </div>
+      </div>
+
+      <div class="pattern-highlight">
+        <h3>💡 Kesamaan Pola dari Kedua Contoh Ini</h3>
+        <p>
+          Meskipun data dan arsitekturnya berbeda, keduanya mengikuti alur dasar
+          yang sama: <b>struktur berlapis</b>, dilatih lewat
+          <b>siklus training (forward pass → loss → backprop)</b>, lalu
+          dioperasikan lewat <b>inferensi satu kali forward pass</b>. Ini
+          membuktikan Deep Learning benar-benar menjadi fondasi mesin yang sama,
+          hanya disesuaikan untuk jenis data yang berbeda!
+        </p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-content">
+        <h3>Kelompok 2 XE-7 - Deep Learning</h3>
+        <p>Disusun oleh</p>
+        <ul class="footer-members">
+          <li>Adzra Azalia Qaireen - 01</li>
+          <li>Asyam Zhafran Ilham - 09</li>
+          <li>Farah Wulandari Erianto - 14</li>
+          <li>Queensha Emerald Rifat Maharani - 30</li>
+          <li>Vinsensius Cristian Bintang Anugrah - 35</li>
+        </ul>
+      </div>
+    </footer>
+
+    <script>
+      // --- 1. INITIALIZATION ---
+      const pixelGrid = document.getElementById("pixelGrid");
+      const networkContainer = document.getElementById("networkContainer");
+      const svgLines = document.getElementById("svgLines");
+      const outputContainer = document.getElementById("output-container");
+
+      const layers = [
+        { count: 3, labels: ["Piksel R", "Piksel G", "Piksel B"] },
+        { count: 4, labels: ["Garis", "Tepi", "Tekstur", "Kontras"] },
+        { count: 4, labels: ["Telinga", "Kumis", "Bentuk Mata", "Corak"] },
+        { count: 2, labels: ["Spesies", "Ras"] },
+      ];
+      let nodeElements = [];
+
+      // Generate Pixels
+      for (let i = 0; i < 9; i++) {
+        let pixel = document.createElement("div");
+        pixel.className = "pixel";
+        pixel.innerText = Math.floor(Math.random() * 255);
+        pixelGrid.appendChild(pixel);
+      }
+
+      // Generate Nodes
+      const containerWidth = 500; // Match max-width
+      const layerSpacing = containerWidth / (layers.length + 1);
+
+      layers.forEach((layerData, layerIndex) => {
+        let layerDiv = document.createElement("div");
+        layerDiv.className = "layer-group";
+        layerDiv.style.left = `${layerSpacing * (layerIndex + 1) - 40}px`;
+
+        let currentLayerNodes = [];
+        for (let n = 0; n < layerData.count; n++) {
+          let nodeItem = document.createElement("div");
+          nodeItem.className = "node-item";
+
+          let node = document.createElement("div");
+          node.className = "node";
+
+          let label = document.createElement("div");
+          label.className = "node-label";
+          label.innerText = layerData.labels[n];
+
+          nodeItem.appendChild(node);
+          nodeItem.appendChild(label);
+          layerDiv.appendChild(nodeItem);
+
+          currentLayerNodes.push(node);
+        }
+        networkContainer.appendChild(layerDiv);
+        nodeElements.push(currentLayerNodes);
+      });
+
+      // Generate SVG Lines
+      function drawLines() {
+        svgLines.innerHTML = "";
+        const containerRect = networkContainer.getBoundingClientRect();
+
+        svgLines.setAttribute(
+          "viewBox",
+          `0 0 ${containerRect.width} ${containerRect.height}`,
+        );
+        svgLines.setAttribute("width", "100%");
+        svgLines.setAttribute("height", "100%");
+
+        for (let i = 1; i < layers.length; i++) {
+          const prevNodes = nodeElements[i - 1];
+          const currNodes = nodeElements[i];
+
+          prevNodes.forEach((prevNode) => {
+            const prevRect = prevNode.getBoundingClientRect();
+            const x1 = prevRect.left + prevRect.width / 2 - containerRect.left;
+            const y1 = prevRect.top + prevRect.height / 2 - containerRect.top;
+
+            currNodes.forEach((currNode) => {
+              const currRect = currNode.getBoundingClientRect();
+              const x2 =
+                currRect.left + currRect.width / 2 - containerRect.left;
+              const y2 = currRect.top + currRect.height / 2 - containerRect.top;
+
+              const line = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "line",
+              );
+              line.setAttribute("x1", x1);
+              line.setAttribute("y1", y1);
+              line.setAttribute("x2", x2);
+              line.setAttribute("y2", y2);
+              line.setAttribute("class", "layer-line");
+              svgLines.appendChild(line);
+            });
+          });
+        }
+      }
+
+      requestAnimationFrame(() => {
+        drawLines();
+      });
+      window.addEventListener("resize", drawLines);
+
+      // --- 2. SCROLL REVEAL LOGIC ---
+      const reveals = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) entry.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.1 },
+      );
+      reveals.forEach((r) => observer.observe(r));
+
+      // --- 3. SIMULATION LOGIC (Forward Pass) ---
+      function runSimulation() {
+        // Reset everything
+        document
+          .querySelectorAll(".node-item")
+          .forEach((n) => n.classList.remove("active"));
+        document
+          .querySelectorAll(".layer-line")
+          .forEach((l) => l.classList.remove("active"));
+        document
+          .querySelectorAll(".pixel")
+          .forEach((p) => p.classList.remove("active"));
+
+        // Reset Output to completely empty
+        outputContainer.innerHTML =
+          '<p class="output-placeholder">Sedang memproses gambar...</p>';
+
+        const catImage = document.getElementById("catImage");
+        const pixels = document.querySelectorAll(".pixel");
+        const lines = document.querySelectorAll(".layer-line");
+        const nodeItems = document.querySelectorAll(".node-item");
+
+        // 1. Image turns into pixels
+        catImage.style.opacity = "0.1";
+        pixelGrid.style.opacity = "1";
+        pixels.forEach((pixel, i) => {
+          setTimeout(() => pixel.classList.add("active"), i * 100);
+        });
+
+        // 2. Data flows through layers
+        let delay = 1000;
+        let lineIndex = 0;
+        let nodeItemIndex = 0;
+
+        nodeElements.forEach((layer, layerIdx) => {
+          if (layerIdx > 0) {
+            let prevNodeCount = nodeElements[layerIdx - 1].length;
+            let currNodeCount = layer.length;
+            let linesToActivate = prevNodeCount * currNodeCount;
+
+            for (let i = 0; i < linesToActivate; i++) {
+              setTimeout(
+                () => {
+                  if (lines[lineIndex])
+                    lines[lineIndex].classList.add("active");
+                  lineIndex++;
+                },
+                delay + i * 40,
+              );
+            }
+            delay += linesToActivate * 40 + 100;
+          }
+
+          layer.forEach((node, nodeIdx) => {
+            setTimeout(
+              () => {
+                if (nodeItems[nodeItemIndex])
+                  nodeItems[nodeItemIndex].classList.add("active");
+                nodeItemIndex++;
+              },
+              delay + nodeIdx * 100,
+            );
+          });
+          delay += layer.length * 100 + 200;
+        });
+
+        // 3. Generate Output ONLY after process finishes
+        // Empty the container first
+        outputContainer.innerHTML = "";
+
+        // Create Output HTML Elements
+        const outputs = [
+          { label: "Hewan: Kucing", pct: 94, class: "cat" },
+          { label: "Ras: Persian", pct: 85, class: "ras" },
+          { label: "Warna: Putih", pct: 70, class: "warna" },
+        ];
+
+        outputs.forEach((out, index) => {
+          setTimeout(
+            () => {
+              let barDiv = document.createElement("div");
+              barDiv.className = "output-bar";
+              barDiv.innerHTML = `
+                        <div class="bar-label">
+                            <span>${out.label}</span>
+                            <span>${out.pct}%</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill ${out.class}" style="width: 0%"></div>
+                        </div>
+                    `;
+              outputContainer.appendChild(barDiv);
+
+              // Trigger reflow then animate width
+              requestAnimationFrame(() => {
+                barDiv.classList.add("visible");
+                barDiv.querySelector(".bar-fill").style.width = out.pct + "%";
+              });
+            },
+            delay + index * 200,
+          );
+        });
+
+        // Restore image opacity slightly after outputs appear
+        setTimeout(() => {
+          catImage.style.opacity = "1";
+          pixelGrid.style.opacity = "0";
+        }, delay + 800);
+      }
+    </script>
+  </body>
+</html>
